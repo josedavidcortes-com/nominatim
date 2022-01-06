@@ -1,0 +1,62 @@
+openapi: 3.0.0
+info:
+  version: '0.6'
+  title: Open Street Map (OSM)
+  description: 'Is a tool to search data by name and address (geocoding) and to generate synthetic addresses of OSM points (reverse geocoding). It can be found at nominatim.openstreetmap.org'
+paths:
+  /search:
+    get:
+      description: '[Full documentation](http://wiki.openstreetmap.org/wiki/Nominatim#Search)'
+      summary: OSM - Search
+      operationId: SearchGet
+      parameters:
+        - name: format 
+          in: query
+          required: true
+          description: 'format=[xml|json|jsonv2|geojson|geocodejson]'
+          schema:
+            type: string
+        - name: q
+          in: query
+          required: true
+          description: 'Free-form query string to search for. Free-form queries are processed first left-to-right and then right-to-left if that fails. So you may search for pilkington avenue, birmingham as well as for birmingham, pilkington avenue. Commas are optional, but improve performance by reducing the complexity of the search.'
+          schema:
+            type: string
+        - name: addressdetails
+          in: query
+          required: false
+          description: 'Include a breakdown of the address into elements. (Default: 0)'
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          description: 'Limit the number of returned results. (Default: 10, Maximum: 50)'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      security: []
+      x-unitTests:
+        - request:
+            method: GET
+            uri: /search?format=json&q=emilio munoz 35, Madrid
+          expectedResponse:
+            x-allowExtraHeaders: true
+            x-bodyMatchMode: NONE
+            x-arrayOrderedMatching: false
+            x-arrayCheckCount: false
+            x-matchResponseSchema: true
+            headers: {}
+          x-testShouldPass: true
+          x-testEnabled: true
+          x-testName: OSM - Search
+          x-testDescription: '[Full documentation](http://wiki.openstreetmap.org/wiki/Nominatim#Search)'
+      x-operation-settings:
+        CollectParameters: false
+        AllowDynamicQueryParameters: false
+        AllowDynamicFormParameters: false
+        IsMultiContentStreaming: false
+servers:
+  - url: https://nominatim.openstreetmap.org
